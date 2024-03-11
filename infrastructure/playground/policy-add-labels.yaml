@@ -1,0 +1,28 @@
+apiVersion: policy.spaces.upbound.io/v1alpha1
+kind: SharedUpboundPolicy
+metadata:
+  name: foo
+  namespace: default
+spec:
+  controlPlaneSelector:
+    names:
+      - e2e-test-shared
+  policyMetadata:
+    annotations:
+      policies.kyverno.io/title: Add Labels
+      policies.kyverno.io/category: Sample
+      policies.kyverno.io/minversion: 1.6.0
+      policies.kyverno.io/severity: medium
+      policies.kyverno.io/subject: Label
+  rules:
+    - name: add-labels
+      match:
+        any:
+          - resources:
+              kinds:
+                - ConfigMap
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              foo: bar
